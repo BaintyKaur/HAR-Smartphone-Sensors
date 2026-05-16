@@ -14,7 +14,7 @@
 |------|-----------|
 | Angel Tressa | 253127 |
 | Bainty Kaur Chugh | 253316 |
-| Suryakiran | 253311 |
+| Suryakiran M S | 253311 |
 
 ---
 
