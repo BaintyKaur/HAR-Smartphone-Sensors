@@ -521,11 +521,11 @@ with tab2:
                     activity_name, emoji = ACTIVITY_MAP[pred_class]
                     
                     st.markdown(f"""
-                    <div style='background: white; padding: 20px; border-radius: 10px; 
+                    <div style='background: #161b22; padding: 20px; border-radius: 10px; 
                                 border-left: 5px solid #667eea; text-align: center;'>
-                        <h3>{emoji} {model_name.upper()}</h3>
+                        <h3 style='color: #ffffff;'>{emoji} {model_name.upper()}</h3>
                         <h2 style='color: #667eea;'>{activity_name}</h2>
-                        <p style='font-size: 16px; color: #666;'>
+                        <p style='font-size: 16px; color: #ffffff;'>
                             Confidence: <b>{confidence*100:.1f}%</b>
                         </p>
                     </div>
