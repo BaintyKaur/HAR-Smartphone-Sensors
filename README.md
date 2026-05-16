@@ -349,15 +349,4 @@ har-project/
 
 ---
 
-## 📚 References
 
-1. Anguita, D., Ghio, A., Oneto, L., Parra, X., & Reyes-Ortiz, J. L. (2013). *A Public Domain Dataset for Human Activity Recognition Using Smartphones.* ESANN.
-2. Wang, J., Chen, Y., Hao, S., Peng, X., & Hu, L. (2019). *Deep Learning for Sensor-Based Activity Recognition: A Survey.* Pattern Recognition Letters.
-3. Ordóñez, F. J., & Roggen, D. (2016). *Deep Convolutional and LSTM Recurrent Neural Networks for Multimodal Wearable Activity Recognition.* Sensors.
-4. Ronao, C. A., & Cho, S. B. (2016). *Human activity recognition with smartphone sensors using deep learning neural networks.* Expert Systems with Applications.
-
----
-
-## 📄 License
-
-This project is submitted for academic purposes. The UCI HAR Dataset is publicly available under the terms of the [UCI Machine Learning Repository](https://archive.ics.uci.edu/).
