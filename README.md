@@ -6,16 +6,15 @@
 
 **Project Title:** Human Activity Recognition from Smartphone Sensors
 
-**Course:** [Your Course Name — e.g. CS4XX: Machine Learning]  
-**Institution:** [Your University / College Name]  
-**Semester:** [e.g. Spring 2025]  
-**Submitted To:** [Professor / Instructor Name]
+**Course:** SODS - Predictive Analytics  
+**Institution:**  Digital University of Kerala, Thiruvananthapuram  
+**Semester:** S-2 
 
 | Name | Student ID |
 |------|-----------|
-| [Member 1 Name] | [ID] |
-| [Member 2 Name] | [ID] |
-| [Member 3 Name] | [ID] |
+| Angel Tressa | 253127 |
+| Bainty Kaur Chugh | 253316 |
+| Suryakiran | 253311 |
 
 ---
 
@@ -336,7 +335,7 @@ har-project/
 
 ## 8. Live Streamlit Deployment
 
-🔗 **[Click here to open the live app](https://your-app-name.streamlit.app)**
+🔗 **[Click here to open the live app](https://har-smartphone-sensors-jpqonaezo8jexpvos7wckd.streamlit.app/)**
 
 > Replace the link above with your actual Streamlit Cloud URL after deployment.
 
