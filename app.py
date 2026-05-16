@@ -34,9 +34,19 @@ except (ImportError, ModuleNotFoundError):
 # ══════════════════════════════════════════════════════════════════════════════
 
 # Get the directory where this script is located
+# Works both locally and on Streamlit Cloud
 PROJECT_DIR = Path(__file__).parent.absolute()
 MODELS_DIR = PROJECT_DIR / "models"
 PREPROCESSED_DIR = PROJECT_DIR / "preprocessed"
+
+# Fallback for Streamlit Cloud
+if not MODELS_DIR.exists():
+    # Try common Streamlit Cloud paths
+    import os
+    cwd = Path.cwd()
+    if (cwd / "models").exists():
+        MODELS_DIR = cwd / "models"
+        PREPROCESSED_DIR = cwd / "preprocessed"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE CONFIGURATION
@@ -52,66 +62,97 @@ st.set_page_config(
 # Custom CSS for professional styling
 st.markdown("""
     <style>
-    /* Main background */
+    /* Ensure proper text visibility */
+    html, body, [class*="css"] {
+        color: #ffffff !important;
+        background-color: #0e1117 !important;
+    }
+    
+    /* Main container */
     .main {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: linear-gradient(135deg, #0e1117 0%, #161b22 100%) !important;
     }
     
     /* Sidebar styling */
     .sidebar .sidebar-content {
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%) !important;
+    }
+    
+    /* Headers - Force white text */
+    h1, h2, h3, h4, h5, h6 {
+        color: #ffffff !important;
+        text-align: center;
+    }
+    
+    /* Paragraph text */
+    p, label, div, span {
+        color: #e0e6ed !important;
+    }
+    
+    /* Input fields */
+    input, textarea, select {
+        background-color: #161b22 !important;
+        color: #ffffff !important;
+        border: 1px solid #30363d !important;
+    }
+    
+    /* Buttons */
+    button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: #ffffff !important;
+    }
+    
+    button:hover {
+        opacity: 0.8;
     }
     
     /* Headers */
-    h1 {
-        color: #2d3748;
-        text-align: center;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-    
     h2 {
-        color: #4a5568;
-        border-bottom: 3px solid #667eea;
-        padding-bottom: 8px;
+        color: #ffffff !important;
+        border-bottom: 3px solid #667eea !important;
+        padding-bottom: 8px !important;
     }
     
     h3 {
-        color: #667eea;
+        color: #667eea !important;
     }
     
     /* Metric cards */
     .metric-card {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        border-left: 4px solid #667eea;
+        background: #161b22 !important;
+        padding: 20px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+        border-left: 4px solid #667eea !important;
+        color: #ffffff !important;
     }
     
     /* Info boxes */
     .info-box {
-        background-color: #e6f2ff;
-        border-left: 5px solid #0066cc;
-        padding: 15px;
-        border-radius: 5px;
-        margin: 10px 0;
+        background-color: #1f6feb !important;
+        border-left: 5px solid #3fb950 !important;
+        padding: 15px !important;
+        border-radius: 5px !important;
+        margin: 10px 0 !important;
+        color: #ffffff !important;
     }
     
     .success-box {
-        background-color: #e6ffe6;
-        border-left: 5px solid #00cc00;
-        padding: 15px;
-        border-radius: 5px;
-        margin: 10px 0;
+        background-color: #238636 !important;
+        border-left: 5px solid #3fb950 !important;
+        padding: 15px !important;
+        border-radius: 5px !important;
+        margin: 10px 0 !important;
+        color: #ffffff !important;
     }
     
     .warning-box {
-        background-color: #fff4e6;
-        border-left: 5px solid #ff9900;
-        padding: 15px;
-        border-radius: 5px;
-        margin: 10px 0;
+        background-color: #9e6a03 !important;
+        border-left: 5px solid #d29922 !important;
+        padding: 15px !important;
+        border-radius: 5px !important;
+        margin: 10px 0 !important;
+        color: #ffffff !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -139,10 +180,25 @@ def load_models():
     # Try to load LSTM only if TensorFlow is available
     if TF_AVAILABLE:
         try:
-            models['lstm'] = tf.keras.models.load_model(str(MODELS_DIR / 'lstm_model.h5'), compile=False)
+            # Try with custom_objects for Keras 3.x compatibility
+            try:
+                models['lstm'] = tf.keras.models.load_model(
+                    str(MODELS_DIR / 'lstm_model.h5'), 
+                    compile=False,
+                    custom_objects=None
+                )
+            except:
+                # Fallback: try loading with safe mode
+                import tensorflow as tf
+                tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+                models['lstm'] = tf.keras.models.load_model(
+                    str(MODELS_DIR / 'lstm_model.h5'),
+                    compile=False
+                )
             st.success("✅ LSTM model loaded")
         except Exception as e:
-            st.warning(f"⚠️ LSTM model not found or TensorFlow error: {str(e)}")
+            st.warning(f"⚠️ LSTM model error: TensorFlow/Keras version mismatch - Using SVM/RF only")
+            # Don't add lstm to models dict
     else:
         st.warning("⚠️ TensorFlow not available - LSTM model skipped")
     
